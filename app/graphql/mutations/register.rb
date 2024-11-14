@@ -4,9 +4,9 @@ module Mutations
 
         argument :account_type, Types::AccountTypeType, required: true, description: "Type of the account."
         argument :name, String, required: true, description: "Name of the user."
-        argument :company_number, String, required: false
-        argument :date_of_birth, String, required: false
-        argument :email, String, required: false
+        argument :company_number, String, required: true
+        argument :date_of_birth, String, required: true
+        argument :email, String, required: true
         argument :password, String, required: true
 
         def resolve(**args)

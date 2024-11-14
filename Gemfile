@@ -50,3 +50,5 @@ gem "sprockets-rails", "~> 3.5"
 gem "propshaft", "~> 1.1"
 
 gem "annotate", "~> 3.2"
+
+gem "jwt", "~> 2.9"
