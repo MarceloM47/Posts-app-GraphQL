@@ -13,7 +13,7 @@ module Types
     field :accounts, [Types::AccountType], null: true
 
     # Posts
-    field :posts, Types::PostsPageType, null: false do
+    field :posts, Types::Posts::PostsPageType, null: false do
       argument :page, Integer, required: false, default_value: 1
       argument :per_page, Integer, required: false, default_value: 10
     end
@@ -21,7 +21,7 @@ module Types
     def posts(page:, per_page:)
       total = Post.count
       {
-        items: Post.offset((page - 1) * per_page).limit(per_page),
+        results: Post.offset((page - 1) * per_page).limit(per_page),
         total_count: total,
         total_pages: (total.to_f / per_page).ceil,
         current_page: page
