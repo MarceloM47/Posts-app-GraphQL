@@ -14,7 +14,13 @@ module Mutations
             if account.save
               { account: account }
             else
-              raise GraphQL::ExecutionError.new("Register failed.")
+              if account.errors.details[:email]&.any? { |error| error[:error] == :taken }
+                raise GraphQL::ExecutionError, "The email is already in use."
+              elsif account.errors.details[:username]&.any? { |error| error[:error] == :taken }
+                raise GraphQL::ExecutionError, "The username is already in use."
+              else
+                raise GraphQL::ExecutionError, "Register failed: #{account.errors.full_messages.join(', ')}"
+              end
             end
         end
     end

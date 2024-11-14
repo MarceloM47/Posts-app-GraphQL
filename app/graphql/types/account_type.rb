@@ -9,6 +9,7 @@ module Types
     field :date_of_birth, GraphQL::Types::ISO8601Date
     field :email, String, null: false
     # field :password_digest, String, null: false
+    field :jwt, String, null: true
     field :created_at, GraphQL::Types::ISO8601Date, null: false
     field :updated_at, GraphQL::Types::ISO8601Date, null: false
   end
