@@ -5,6 +5,8 @@ class GraphqlController < ApplicationController
   # This allows for outside API access while preventing CSRF attacks,
   # but you'll have to authenticate your user separately
   # protect_from_forgery with: :null_session
+  before_action :authenticate_user!, only: [:execute]
+  skip_before_action :authenticate_user!, if: :mutation_is_public?
 
   def execute
     variables = prepare_variables(params[:variables])
@@ -22,6 +24,29 @@ class GraphqlController < ApplicationController
   end
 
   private
+
+  def mutation_is_public?
+    query = params[:query].to_s
+    public_operations = ['login', 'register']
+    public_operations.any? { |op| query.include?(op) }
+  end
+
+  def authenticate_user!
+    token = request.headers['Authorization'].to_s.split(' ').last
+    if token.blank?
+      render json: { errors: [{ message: 'Authorization token is missing' }] }, status: :unauthorized and return
+    end
+
+    decoded = JsonWebToken.decode(token)
+    if decoded.nil? || decoded[:user_id].blank?
+      render json: { errors: [{ message: 'Invalid or expired token' }] }, status: :unauthorized and return
+    end
+
+    @current_user = User.find_by(id: decoded[:user_id])
+    if @current_user.nil?
+      render json: { errors: [{ message: 'User not found' }] }, status: :unauthorized and return
+    end
+  end
 
   def current_user
     return unless request.headers['Authorization'].present?

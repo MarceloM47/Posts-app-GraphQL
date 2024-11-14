@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_12_202318) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_14_131635) do
   create_table "accounts", force: :cascade do |t|
     t.string "name"
     t.string "email"
@@ -22,4 +22,15 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_12_202318) do
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_accounts_on_email", unique: true
   end
+
+  create_table "posts", force: :cascade do |t|
+    t.string "title"
+    t.text "content"
+    t.integer "account_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_posts_on_account_id"
+  end
+
+  add_foreign_key "posts", "accounts"
 end

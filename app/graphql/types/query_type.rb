@@ -3,12 +3,21 @@
 module Types
   class QueryType < Types::BaseObject
     include Queries::AccountQueries
+    include Queries::PostQueries
 
+    # Accounts
     field :account, Types::AccountType, null: true do
       argument :id, ID, required: true
     end
 
     field :accounts, [Types::AccountType], null: true
+
+    # Posts
+    field :post, Types::PostType, null: true do
+      argument :id, ID, required: true
+    end
+
+    field :posts, [Types::PostType], null: true
 
     field :node, Types::NodeType, null: true, description: "Fetches an object given its ID." do
       argument :id, ID, required: true, description: "ID of the object."
