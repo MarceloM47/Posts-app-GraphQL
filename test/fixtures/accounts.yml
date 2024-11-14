@@ -1,0 +1,30 @@
+# == Schema Information
+#
+# Table name: accounts
+#
+#  id              :integer          not null, primary key
+#  name            :string
+#  email           :string
+#  password_digest :string
+#  account_type    :string
+#  company_number  :string
+#  date_of_birth   :date
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
+
+one:
+  name: MyString
+  email: MyString
+  password_digest: MyString
+  account_type: MyString
+  company_number: MyString
+  date_of_birth: 2024-11-12
+
+two:
+  name: MyString
+  email: MyString
+  password_digest: MyString
+  account_type: MyString
+  company_number: MyString
+  date_of_birth: 2024-11-12
