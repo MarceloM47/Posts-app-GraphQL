@@ -13,11 +13,20 @@ module Types
     field :accounts, [Types::AccountType], null: true
 
     # Posts
-    field :post, Types::PostType, null: true do
-      argument :id, ID, required: true
+    field :posts, Types::PostsPageType, null: false do
+      argument :page, Integer, required: false, default_value: 1
+      argument :per_page, Integer, required: false, default_value: 10
     end
 
-    field :posts, [Types::PostType], null: true
+    def posts(page:, per_page:)
+      total = Post.count
+      {
+        items: Post.offset((page - 1) * per_page).limit(per_page),
+        total_count: total,
+        total_pages: (total.to_f / per_page).ceil,
+        current_page: page
+      }
+    end
 
     field :node, Types::NodeType, null: true, description: "Fetches an object given its ID." do
       argument :id, ID, required: true, description: "ID of the object."

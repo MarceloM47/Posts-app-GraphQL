@@ -10,7 +10,7 @@
 #  updated_at :datetime         not null
 #
 class Post < ApplicationRecord
-  belongs_to :account, class_name: 'Account', foreign_key: 'account_id'
+  belongs_to :account
 
   validates :title, presence: true
   validates :content, presence: true

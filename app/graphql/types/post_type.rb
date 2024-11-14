@@ -5,7 +5,7 @@ module Types
       field :id, ID, null: false
       field :title, String, null: false
       field :content, String, null: false
-      field :account_id, String, null: true
+      field :account, Types::AccountType, null: false
       field :created_at, GraphQL::Types::ISO8601Date, null: false
       field :updated_at, GraphQL::Types::ISO8601Date, null: false
     end
