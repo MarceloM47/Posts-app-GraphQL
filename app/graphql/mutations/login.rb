@@ -11,10 +11,18 @@ module Mutations
       account = Account.find_by(email: email)
 
       if account&.authenticate(password)
-        token = JsonWebToken.encode(user_id: account.id)
-        { account: account, token: token }
+        token = JsonWebToken.encode(account_id: account.id)
+        {
+          account: account,
+          token: token,
+          errors: []
+        }
       else
-        { errors: ['Invalid credentials'] }
+        {
+          account: nil,
+          token: nil,
+          errors: ['Invalid credentials']
+        }
       end
     rescue => e
       { errors: [e.message] }

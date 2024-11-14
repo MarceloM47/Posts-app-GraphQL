@@ -5,8 +5,8 @@ class GraphqlController < ApplicationController
   # This allows for outside API access while preventing CSRF attacks,
   # but you'll have to authenticate your user separately
   # protect_from_forgery with: :null_session
-  before_action :authenticate_user!, only: [:execute]
-  skip_before_action :authenticate_user!, if: :mutation_is_public?
+  before_action :authenticate_account!, only: [:execute]
+  skip_before_action :authenticate_account!, if: :mutation_is_public?
 
   def execute
     variables = prepare_variables(params[:variables])
@@ -14,7 +14,7 @@ class GraphqlController < ApplicationController
     operation_name = params[:operationName]
     context = {
       # Query context goes here, for example:
-      current_user: current_user,
+      current_account: current_account,
     }
     result = GraphpQlCrudSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
@@ -31,31 +31,31 @@ class GraphqlController < ApplicationController
     public_operations.any? { |op| query.include?(op) }
   end
 
-  def authenticate_user!
+  def authenticate_account!
     token = request.headers['Authorization'].to_s.split(' ').last
     if token.blank?
       render json: { errors: [{ message: 'Authorization token is missing' }] }, status: :unauthorized and return
     end
 
     decoded = JsonWebToken.decode(token)
-    if decoded.nil? || decoded[:user_id].blank?
+    if decoded.nil? || decoded[:account_id].blank?
       render json: { errors: [{ message: 'Invalid or expired token' }] }, status: :unauthorized and return
     end
 
-    @current_user = User.find_by(id: decoded[:user_id])
-    if @current_user.nil?
+    @current_account = Account.find_by(id: decoded[:account_id])
+    if @current_account.nil?
       render json: { errors: [{ message: 'User not found' }] }, status: :unauthorized and return
     end
   end
 
-  def current_user
+  def current_account
     return unless request.headers['Authorization'].present?
 
     token = request.headers['Authorization'].split(' ').last
     decoded = JsonWebToken.decode(token)
     return unless decoded
 
-    User.find_by(id: decoded[:user_id])
+    Account.find_by(id: decoded[:account_id])
   end
 
   # Handle variables in form data, JSON body, or a blank value
