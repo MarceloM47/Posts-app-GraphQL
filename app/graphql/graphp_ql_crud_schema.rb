@@ -4,6 +4,11 @@ class GraphpQlCrudSchema < GraphQL::Schema
   mutation(Types::MutationType)
   query(Types::QueryType)
 
+  def introspection_query?
+    query = params[:query].to_s
+    query.include?('__schema') || query.include?('__type') || mutation_is_public?
+  end
+
   # For batch-loading (see https://graphql-ruby.org/dataloader/overview.html)
   use GraphQL::Dataloader
 
@@ -28,6 +33,10 @@ class GraphpQlCrudSchema < GraphQL::Schema
 
   # Stop validating when it encounters this many errors:
   validate_max_errors(100)
+
+  rescue_from(ActiveRecord::RecordNotFound) do |err, obj, args, ctx, field|
+    raise GraphQL::ExecutionError, "#{field.type.unwrap.graphql_name} not found"
+  end
 
   # Relay-style Object Identification:
 

@@ -1,10 +1,3 @@
-GIT
-  remote: https://github.com/rmosolgo/graphiql-rails.git
-  revision: 1d4c70055c0e3b601e18c8c8d69892bf6bb8e0c2
-  specs:
-    graphiql-rails (1.10.1)
-      railties
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -101,9 +94,13 @@ GEM
       reline (>= 0.3.8)
     drb (2.2.1)
     erubi (1.13.0)
+    ffi (1.17.0-x64-mingw-ucrt)
+    ffi (1.17.0-x86_64-linux-gnu)
     fiber-storage (1.0.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    graphiql-rails (1.10.1)
+      railties
     graphql (2.4.3)
       base64
       fiber-storage
@@ -232,6 +229,16 @@ GEM
       rubocop-performance
       rubocop-rails
     ruby-progressbar (1.13.0)
+    sass-rails (6.0.0)
+      sassc-rails (~> 2.1, >= 2.1.1)
+    sassc (2.4.0)
+      ffi (~> 1.9)
+    sassc-rails (2.1.2)
+      railties (>= 4.0.0)
+      sassc (>= 2.0)
+      sprockets (> 3.0)
+      sprockets-rails
+      tilt
     securerandom (0.3.2)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
@@ -244,6 +251,7 @@ GEM
     sqlite3 (2.2.0-x86_64-linux-gnu)
     stringio (3.1.2)
     thor (1.3.2)
+    tilt (2.4.0)
     timeout (0.4.2)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
@@ -266,7 +274,7 @@ DEPENDENCIES
   bootsnap
   brakeman
   debug
-  graphiql-rails!
+  graphiql-rails
   graphql (~> 2.4)
   jwt (~> 2.9)
   propshaft (~> 1.1)
@@ -274,6 +282,7 @@ DEPENDENCIES
   rack-cors
   rails (~> 7.2.2)
   rubocop-rails-omakase
+  sass-rails
   sprockets-rails (~> 3.5)
   sqlite3 (>= 1.4)
   tzinfo-data

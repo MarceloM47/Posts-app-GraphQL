@@ -28,7 +28,9 @@ class GraphqlController < ApplicationController
   def mutation_is_public?
     query = params[:query].to_s
     public_operations = ['login', 'register']
-    public_operations.any? { |op| query.include?(op) }
+    public_operations.any? { |op| query.include?(op) } || 
+      query.include?('__schema') || 
+      query.include?('__type')
   end
 
   def authenticate_account!

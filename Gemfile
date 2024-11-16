@@ -38,17 +38,15 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  gem "graphiql-rails"
+  gem 'sass-rails'
+  gem "sprockets-rails", "~> 3.5"
+  gem "annotate", "~> 3.2"
 end
 
 
 
 gem "graphql", "~> 2.4"
-gem "graphiql-rails", github: "rmosolgo/graphiql-rails", group: :development
-
-gem "sprockets-rails", "~> 3.5"
-
 gem "propshaft", "~> 1.1"
-
-gem "annotate", "~> 3.2"
-
 gem "jwt", "~> 2.9"
