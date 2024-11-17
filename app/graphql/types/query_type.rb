@@ -14,18 +14,12 @@ module Types
 
     # Posts
     field :posts, Types::Posts::PostsPageType, null: false do
-      argument :page, Integer, required: false, default_value: 1
-      argument :per_page, Integer, required: false, default_value: 10
-    end
-
-    def posts(page:, per_page:)
-      total = Post.count
-      {
-        results: Post.offset((page - 1) * per_page).limit(per_page),
-        total_count: total,
-        total_pages: (total.to_f / per_page).ceil,
-        current_page: page
-      }
+      argument :page, Integer, required: false, default_value: 1,
+        description: "Page number"
+      argument :per_page, Integer, required: false, default_value: 10,
+        description: "Items per page"
+      argument :order_by, Types::Posts::OrderByEnum, required: false,
+        description: "Order posts by specific field and direction"
     end
 
     field :node, Types::NodeType, null: true, description: "Fetches an object given its ID." do
