@@ -31,3 +31,18 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+
+# CLIENT (ANGULAR)
+/client/node_modules/
+/client/dist/
+/client/.angular/cache
+/client/connect.lock
+/client/coverage/
+/client/npm-debug.log
+/client/yarn-error.log
+/client/testem.log
+/client/.env
+/client/.env.*
+/client/.DS_Store
+/client/.vscode
