@@ -11,6 +11,8 @@
 #
 class Post < ApplicationRecord
   belongs_to :account
+  has_many :reactions, dependent: :destroy
+  has_many :liking_accounts, through: :reactions, source: :account
 
   validates :title, presence: true
   validates :content, presence: true

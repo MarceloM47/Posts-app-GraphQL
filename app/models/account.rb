@@ -15,6 +15,8 @@
 class Account < ApplicationRecord
     has_secure_password
     has_many :posts, dependent: :destroy
+    has_many :reactions
+    has_many :liked_posts, through: :reactions, source: :post  
   
     validates :email, presence: true, uniqueness: true
     validates :name, presence: true
