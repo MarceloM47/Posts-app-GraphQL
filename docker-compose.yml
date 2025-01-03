@@ -1,0 +1,42 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/tmp/pids
+      - /app/tmp/cache
+      - bundle_cache:/usr/local/bundle
+    depends_on:
+      - db
+      - redis
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: postgres://postgres:password@db:5432/pos-system
+      REDIS_URL: redis://redis:6379/0
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+
+  db:
+    image: postgres:16
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=pos-system
+
+  redis:
+    image: redis:6.2
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  postgres_data:
+  bundle_cache:
+  redis_data:

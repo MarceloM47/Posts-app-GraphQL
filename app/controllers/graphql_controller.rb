@@ -34,20 +34,41 @@ class GraphqlController < ApplicationController
   end
 
   def authenticate_account!
-    token = request.headers['Authorization'].to_s.split(' ').last
-    if token.blank?
-      render json: { errors: [{ message: 'Authorization token is missing' }] }, status: :unauthorized and return
-    end
-
-    decoded = JsonWebToken.decode(token)
-    if decoded.nil? || decoded[:account_id].blank?
-      render json: { errors: [{ message: 'Invalid or expired token' }] }, status: :unauthorized and return
-    end
-
-    @current_account = Account.find_by(id: decoded[:account_id])
-    if @current_account.nil?
-      render json: { errors: [{ message: 'User not found' }] }, status: :unauthorized and return
-    end
+    begin
+      auth_header = request.headers['Authorization'].to_s
+      Rails.logger.debug "====== Auth header completo: #{auth_header}"
+      
+      token = auth_header.split(' ').last
+      Rails.logger.debug "====== Token extraído: #{token}"
+      
+      if token.blank?
+        Rails.logger.debug "====== Token está en blanco"
+        render json: { errors: [{ message: 'Authorization token is missing' }] }, status: :unauthorized and return
+      end
+  
+      decoded = JsonWebToken.decode(token)
+      Rails.logger.debug "====== Token decodificado: #{decoded.inspect}"
+      
+      if decoded.nil? || decoded[:account_id].blank?
+        Rails.logger.debug "====== Token decodificado es nil o no tiene account_id"
+        render json: { errors: [{ message: 'Invalid or expired token' }] }, status: :unauthorized and return
+      end
+  
+      @current_account = Account.find_by(id: decoded[:account_id])
+      Rails.logger.debug "====== Cuenta encontrada: #{@current_account.inspect}"
+      
+      if @current_account.nil?
+        Rails.logger.debug "====== No se encontró la cuenta"
+        render json: { errors: [{ message: 'User not found' }] }, status: :unauthorized and return
+      end
+  
+    rescue JWT::DecodeError => e
+      Rails.logger.debug "====== Error JWT: #{e.message}"
+      render json: { errors: [{ message: 'Invalid token format' }] }, status: :unauthorized
+    rescue => e
+      Rails.logger.debug "====== Error general: #{e.class} - #{e.message}"
+      render json: { errors: [{ message: 'Authentication error' }] }, status: :unauthorized
+    end  
   end
 
   def current_account
