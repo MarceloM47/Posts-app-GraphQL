@@ -31,7 +31,7 @@ gem "bootsnap", require: false
 gem "rack-cors"
 gem "graphql", "~> 2.4"
 gem "propshaft", "~> 1.1"
-gem "jwt", "~> 2.9"
+gem "jwt", "~> 2.10"
 
 
 group :development, :test do
