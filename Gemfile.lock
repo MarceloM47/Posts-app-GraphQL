@@ -101,7 +101,7 @@ GEM
       activesupport (>= 6.1)
     graphiql-rails (1.10.1)
       railties
-    graphql (2.4.9)
+    graphql (2.4.10)
       base64
       fiber-storage
       logger
@@ -115,7 +115,7 @@ GEM
     jwt (2.10.1)
       base64
     language_server-protocol (3.17.0.3)
-    logger (1.6.2)
+    logger (1.6.6)
     loofah (2.23.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
